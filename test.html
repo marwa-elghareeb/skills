@@ -1,0 +1,274 @@
+<?php
+/**
+ * The main template file
+ *
+ * This is the most generic template file in a WordPress theme
+ * and one of the two required files for a theme (the other being style.css).
+ * It is used to display a page when nothing more specific matches a query.
+ * E.g., it puts together the home page when no home.php file exists.
+ *
+ * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
+ *
+ * @package advanced_skills_theme
+ */
+
+get_header();
+?>
+    <main>
+        <!--? slider Area Start-->
+        <section class="slider-area ">
+            <div class="slider-active">
+                <!-- Single Slider -->
+                <div class="single-slider slider-height d-flex align-items-center">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-7 col-md-12">
+                                <div class="hero__caption">
+                                    <h1 data-animation="fadeInLeft" data-delay="0.2s">مركز مهارات متقدمة للتدريب</h1>
+                                    <p data-animation="fadeInLeft" data-delay="0.4s">مركز تدريب معتمد ومرخص من المؤسسة العامة للتدريب التقني والمهني
+نقدم الدورات التدريبية التطويرية في المجال الصحي ومجال الإعلام التي تساهم في تطوير الكوادر البشرية لتكون مؤهله لبيئة العمل.</p>
+                                    <a href="https://advance-skills.msaaq.net/courses" class="btn hero-btn" data-animation="fadeInLeft" data-delay="0.7s">سجل الان</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>          
+                </div>
+            </div>
+        </section>
+        <!-- ? services-area -->
+        <div class="services-area">
+            <div class="container">
+                <div class="row justify-content-sm-center">
+                    <div class="col-lg-4 col-md-6 col-sm-8">
+                        <div class="single-services mb-30">
+                            <div class="features-icon">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/img/icon/icon1.svg" alt="">
+                            </div>
+                            <div class="features-caption">
+                                <h3>60+ كورس متنوع</h3>
+                                <p>كورسات متنوعة فى مختلف المجالات تؤهلك لسوق العمل.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-8">
+                        <div class="single-services mb-30">
+                            <div class="features-icon">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/img/icon/icon2.svg" alt="">
+                            </div>
+                            <div class="features-caption">
+                                <h3>باقة من أفضل المدربين</h3>
+                                <p>لدينا مجموعة من أفضل الكوادر فى مجال التدريب .</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-8">
+                        <div class="single-services mb-30">
+                            <div class="features-icon">
+                                <img src="<?php echo get_template_directory_uri(); ?>/assets/img/icon/icon3.svg" alt="">
+                            </div>
+                            <div class="features-caption">
+                                <h3>إشتراك مدى الحياة</h3>
+                                <p>إشتراكك يتضمن دخول مجانى للكورس مدى الحياة .</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Courses area start -->
+        <div class="courses-area section-padding40 fix">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-7 col-lg-8">
+                        <div class="section-tittle text-center mb-55">
+                            <h2>دورات مميزة</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="courses-actives">
+                <?php
+        $args = array(  
+            'post_type' => 'course',
+            'post_status' => 'publish',
+            'posts_per_page' => 12, 
+            'orderby' => 'title', 
+            'order' => 'ASC', 
+        );
+         
+        $loop = new WP_Query( $args ); 
+             
+        while ( $loop->have_posts() ) : $loop->the_post(); 
+        ?>
+         <!-- Single -->
+         <div class="properties pb-20">
+                        <div class="properties__card">
+                            <div class="properties__img overlay1">
+                                
+                                <?php  $post_id = get_the_ID(); 
+                                $image = wp_get_attachment_image_src( get_post_thumbnail_id( $post_id), 'single-post-thumbnail' );
+?>
+                                <a href="#"><img src="<?php echo $image[0]; ?>" alt=""></a>
+
+                            </div>
+                            <div class="properties__caption">
+                                <?php
+                                 $terms = get_the_terms( get_the_ID(), 'course_category' );
+                                 $terms = join(', ', wp_list_pluck( $terms , 'name') );
+                                ?>
+                                <p><?php echo $terms;?></p>
+                                <h3><a href="#"><?php the_title();?></a></h3>
+                                <p>
+                                <?php the_excerpt();?>
+                                </p>
+                                <div class="properties__footer d-flex justify-content-between align-items-center">
+                                <div class="restaurant-name">
+                                            <div class="rating">
+                                                
+                                            </div>
+                                            <p></p>
+                                        </div>
+                                    <div class="price">
+                                        <span> <?php 
+                                        $custom_field_value = get_post_meta( get_the_ID(), 'course_price', true );
+                                        echo $custom_field_value;
+                                        ?></span>
+                                    </div>
+                                </div>
+                                <a href="#" class="border-btn border-btn2">المزيد</a>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- Single -->
+          <?php
+        endwhile;
+         
+        wp_reset_postdata();
+        ?>
+                </div>
+            </div>
+        </div>
+        <!-- Courses area End -->
+        <!--? About Area-1 Start -->
+        <section class="about-area1 section-padding40 fix pt-10">
+            <div class="support-wrapper align-items-center">
+                <div class="left-content1">
+                    
+                    <!-- section tittle -->
+                    <div class="section-tittle section-tittle2 mb-55">
+                        <div class="front-text">
+                            <h2 class="">تعلم مهارات جديدة عبر الإنترنت مع كبار المعلمين</h2>
+                            <p>تعلم مهارات جديدة تؤهلك لسوق العمل مع أفضل كوادر التدريب والتعليم ..</p>
+                        </div>
+                    </div>
+                    <div class="single-features">
+                        <div class="features-icon">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/img/icon/right-icon.svg" alt="">
+                        </div>
+                        <div class="features-caption">
+                            <p>تقنيات فعالة فى التعليم متوافقة مع جميع الفئات العمرية . </p>
+                        </div>
+                    </div>
+                    <div class="single-features">
+                        <div class="features-icon">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/img/icon/right-icon.svg" alt="">
+                        </div>
+                        <div class="features-caption">
+                            <p>انضم إلى ملايين الأشخاص من جميع أنحاء العالم للتعلم معًا.</p>
+                        </div>
+                    </div>
+
+                    <div class="single-features">
+                        <div class="features-icon">
+                            <img src="<?php echo get_template_directory_uri(); ?>/assets/img/icon/right-icon.svg" alt="">
+                        </div>
+                        <div class="features-caption">
+                            <p>انضم إلى ملايين الأشخاص من جميع أنحاء العالم.التعلم عبر الإنترنت سهل وطبيعي.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="right-content1">
+                    <!-- img -->
+                    <div class="right-img">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/img/gallery/about.png" alt="">
+
+                        <div class="video-icon" >
+                            <a class="popup-video btn-icon" href="https://www.youtube.com/watch?v=up68UAfH0d0"><i class="fas fa-play"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- About Area End -->
+ <!--? Team -->
+        <section class="team-area section-padding40 fix">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-7 col-lg-8">
+                        <div class="section-tittle text-center mb-55">
+                            <h2>أفضل المدربين</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-active">
+                <?php
+        $args = array(  
+            'post_type' => 'teacher',
+            'post_status' => 'publish',
+            'posts_per_page' => 7, 
+            'orderby' => 'title', 
+            'order' => 'ASC', 
+        );
+         
+        $loop = new WP_Query( $args ); 
+             
+        while ( $loop->have_posts() ) : $loop->the_post(); 
+        ?>
+          <div class="single-cat text-center">
+                        <div class="cat-icon">
+                        <?php the_post_thumbnail('thumbnail');?>
+                                            </div>
+                        <div class="cat-cap">
+                            <h5><a href="<?php the_permalink(); ?>"><?php the_title() ?></a></h5>
+                            <p><?php the_excerpt();?></p>
+                        </div>
+                    </div>
+            <?php
+        endwhile;
+         
+        wp_reset_postdata();
+        ?>
+                    
+                </div>
+            </div>
+        </section>
+        <!-- Services End -->
+        
+       
+        
+        <!--? About Area-2 Start -->
+        <section class="about-area2 fix pb-padding">
+            <div class="support-wrapper align-items-center">
+                <div class="right-content2">
+                    <!-- img -->
+                    <div class="right-img">
+                        <img src="<?php echo get_template_directory_uri(); ?>/assets/img/gallery/about2.png" alt="">
+                    </div>
+                </div>
+                <div class="left-content2">
+                    <!-- section tittle -->
+                    <div class="section-tittle section-tittle2 mb-20">
+                        <div class="front-text">
+                            <h2 class="">اتخذ الخطوة التالية نحو أهدافك الشخصية والمهنية معنا.</h2>
+                            <p>طور ذاتك عن دريق باقة من أفضل الدورات التدريبية لتضمن تحقيق هدفك بسهولة ويسر.</p>
+                            <a href="#" class="btn">سجل الان بالمجان</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- About Area End -->
+    </main>
+<?php
+//get_sidebar();
+get_footer();
